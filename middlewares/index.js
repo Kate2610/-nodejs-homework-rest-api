@@ -1,7 +1,5 @@
-const validateBody = require('./validateBody');
-const isValidId = require('./isValidId');
+const checkId = require('./checkId');
+const handleMongooseError = require('./handleMongooseError');
+const auth = require('./auth');
 
-module.exports = {
-    validateBody,
-    isValidId,
-}
+module.exports = { checkId, handleMongooseError, auth };
