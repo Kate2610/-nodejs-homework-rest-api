@@ -6,10 +6,11 @@ const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,16}$/;
 const registerSchema = Joi.object({
   email: Joi.string().required().email({ minDomainSegments: 2 }).pattern(emailPattern).messages({
     'string.email': 'Invalid email',
+    'string.pattern.base': 'Invalid email',
     'any.required': 'Email is required',
   }),
   password: Joi.string().required().pattern(passwordPattern).messages({
-    'string.pattern': 'Password must be 8-16 symbols and contains a-z,A-Z,0-9,!@#-*()',
+    'string.pattern.base': 'Password must be 8-16 symbols and contains a-z,A-Z,0-9,!@#-*()',
     'any.required': 'Password is required',
   }),
 });
