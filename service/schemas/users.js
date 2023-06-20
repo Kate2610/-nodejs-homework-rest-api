@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+const gravatar = require('gravatar');
 const handleMongooseError = require('../../middlewares/handleMongooseError');
-const Schema = mongoose.Schema;
 
-const user = new Schema(
+const { Schema } = mongoose;
+
+const userSchema = new Schema(
   {
     password: {
       type: String,
@@ -22,12 +24,71 @@ const user = new Schema(
       type: String,
       default: null,
     },
+    avatarURL: String, // Добавлено новое поле avatarURL
   },
   { collection: 'users' }
 );
 
-user.post('save', handleMongooseError);
+// Генерация аватара и сохранение в поле avatarURL при сохранении пользователя
+userSchema.post('save', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
 
-const UserModel = mongoose.model('user', user);
+userSchema.post('findOneAndUpdate', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
+
+userSchema.post('findByIdAndUpdate', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
+
+userSchema.post('update', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
+
+userSchema.post('findOneAndDelete', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
+
+userSchema.post('findByIdAndDelete', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
+
+userSchema.post('deleteMany', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
+
+userSchema.post('findOneAndRemove', async function (doc, next) {
+  const avatarURL = gravatar.url(doc.email, { s: '200', r: 'pg', d: 'retro' });
+  doc.avatarURL = avatarURL;
+  await doc.save();
+  next();
+});
+
+// Обработка ошибок при сохранении
+userSchema.post('save', handleMongooseError);
+
+const UserModel = mongoose.model('User', userSchema);
 
 module.exports = UserModel;
