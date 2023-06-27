@@ -57,4 +57,23 @@ router.patch('/avatars', auth, upload.single('avatar'), async (req, res, next) =
   }
 });
 
+router.post('/resend-verification', async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    // Перевірка, чи вже зареєстрований та не верифікований користувач з таким емейлом
+    const existingUser = await usersService.getUserByEmail(email);
+    if (!existingUser || existingUser.verify) {
+      return res.status(400).json({ message: 'Invalid email or user has already been verified' });
+    }
+
+    // Відправка листа з посиланням для верифікації
+    await emailService.sendVerificationEmail(email, existingUser.verificationToken);
+
+    res.status(200).json({ message: 'Verification email sent' });
+  } catch (e) {
+    next(httpError(500, e.message));
+  }
+});
+
 module.exports = router;

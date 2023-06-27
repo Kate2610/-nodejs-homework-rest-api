@@ -24,8 +24,20 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+
     avatarURL: String, // Добавлено новое поле avatarURL
+
+      verify: {
+      type: Boolean,
+      default: false,
+    },
+      
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
   },
+  
   { collection: 'users' }
 );
 
